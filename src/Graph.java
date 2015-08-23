@@ -58,7 +58,7 @@ public class Graph {
         return nodes.get(node);
     }
 
-    public String getDirection(Node player) {
+    public Node getDirection(Node player) {
         System.err.println("Player : " + player);
         Node graphPlayer = nodes.get(player);
 
@@ -96,10 +96,10 @@ public class Graph {
                 .map(Map.Entry::getKey)
                 .findFirst().get();
         System.err.println("choose"+nex);
-        return nodesToDirection(player, nex);
+        return nex;
     }
 
-    private String nodesToDirection(Node origin, Node destination) {
+    public String nodesToDirection(Node origin, Node destination) {
         if (origin.getX() == destination.getX()){
             return (origin.getY()<destination.getY())?"DOWN":"UP";
         }else{
