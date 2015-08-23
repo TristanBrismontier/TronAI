@@ -42,9 +42,13 @@ public class Tron extends PApplet{
     }
 
     private void displayNode(Node node) {
-        fill(255,125);
-        stroke(random(255),random(255),random(255),75);
-        ellipse(node.getX() * ratio, node.getY() * ratio, 5, 5);
+        float r = random(255);
+        float g = random(255);
+        float b = random(255);
+        fill(r,g,b,20);
+        stroke(r,g,b,75);
+        strokeWeight(5);
+        ellipse(node.getX() * ratio, node.getY() * ratio, 8, 8);
         node.getEdges()
                 .forEach(e ->
                     line(e.getNodeA().getX()*ratio, e.getNodeA().getY()*ratio
