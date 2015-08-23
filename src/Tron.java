@@ -64,38 +64,30 @@ public class Tron extends PApplet{
             displaypath();
         popMatrix();
         if(turn) {
-            oldPlayer = player;
-            player = tron.getGraph().getDirection(player);
-            players.add(player);
-            if (oldPlayer != null) {
-                tron.getGraph().removeEdge(player, oldPlayer, false);
+            try {
+                oldPlayer = player;
+                player = tron.getGraph().getDirection(player);
+                players.add(player);
+                if (oldPlayer != null) {
+                    tron.getGraph().removeEdge(player, oldPlayer, false);
+                }
+            } catch (Exception e){
+
             }
         }else{
             oldopponent = opponent;
-
             tron.getGraph().addOpponent(opponent);
             try {
                 List<Node> neig = tron.getGraph().getNeighbours(opponent);
                 Collections.shuffle(neig);
-
                 opponent = neig.stream().filter(node -> !node.isVisited()).findAny().get();
                 oppos.add(opponent);
-            }catch (Exception e){
-                if(oppos.size()>2){
-                    Node last = tron.graph.getNodes().get(oppos.get(0));
-                    last.setVisited(false);
-                    for (int j = 1; j < oppos.size() ; j++) {
-                        Node tmp = tron.graph.getNodes().get(oppos.get(j));
-                        tmp.setVisited(false);
-                        tron.graph.addEdge(last,tmp);
-                        last = tmp;
-                    }
+                if(oldopponent!=null){
+                    tron.getGraph().removeEdge(opponent, oldopponent, false);
                 }
-                oppos.clear();
+            }catch (Exception e){
+               tron.getGraph().restorePath(oppos);
             }
-            if(oldopponent!=null){
-                tron.getGraph().removeEdge(opponent, oldopponent, false);
-             }
         }
         if(oppos.size() == 0){
             turn = true;
@@ -142,7 +134,7 @@ public class Tron extends PApplet{
 
     private void displayEdge(Node origin, Edge e) {
         Node destination = e.getOther(origin);
-        String direction = tron.getGraph().nodesToDirection(origin,destination);
+        String direction = tron.getGraph().computeDirection(origin, destination);
         if (direction.equals("UP")){
             line(origin.getX()*ratio,origin.getY()*ratio,origin.getX()*ratio,origin.getY()*ratio-(ratio/2));
             return;
