@@ -16,7 +16,7 @@
         </dependency>
         <dependency>
             <groupId>org.processing</groupId>
-            <artifactId>processing-core</artifactId>
+            <artifactId>core</artifactId>
             <version>3.0b4</version>
         </dependency>
     </dependencies>
