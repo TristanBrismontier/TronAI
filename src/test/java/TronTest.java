@@ -16,4 +16,5 @@ public class TronTest {
         assertEquals(600, tron.getGraph().getNodes().size());
         assertEquals(2300,tron.getGraph().getEdgeSize());
     }
+
 }
