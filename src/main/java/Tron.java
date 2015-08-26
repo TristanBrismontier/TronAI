@@ -15,7 +15,7 @@ public class Tron extends PApplet{
     private TronUniverse tron;
     private int ratio = 25;
     private int margeX = 90;
-    private int margeY = 180;
+    private int margeY = 60;
     private Node player;
     private Node oldPlayer = null;
     private Node opponent;
@@ -33,7 +33,7 @@ public class Tron extends PApplet{
     }
 
     public void settings() {
-        size(900, 800);
+        size(900, 600);
         initGraph();
     }
 
@@ -49,7 +49,7 @@ public class Tron extends PApplet{
 
     public void setup(){
         smooth();
-        frameRate(100);
+        frameRate(50);
     }
     @Override
     public void keyPressed() {
@@ -57,7 +57,7 @@ public class Tron extends PApplet{
     }
 
     public void draw(){
-        background(0);
+        background(85, 83, 88);
         pushMatrix();
         translate(margeX, margeY);
             displayGraph();
@@ -99,34 +99,31 @@ public class Tron extends PApplet{
 
     private void displaypath() {
         displayPath(players,true);
-        displayPath(oppos,false);
+        displayPath(oppos, false);
     }
 
     private void displayPath(List<Node> nodes, boolean p) {
-        float b = (p)?0:255;
-        float g = (p)?255:0;
-        stroke(0,g,b,255);
-        strokeWeight(5);
-            if(nodes.size()>1){
-                Node last = nodes.get(0);
-                for (int i = 1; i <nodes.size() ; i++) {
-                    line(last.getX()*ratio,last.getY()*ratio,nodes.get(i).getX()*ratio,nodes.get(i).getY()*ratio);
-                    last = nodes.get(i);
-                }
-            }
-    }
-
-    private void displayGraph() {
+         if(p){
+             stroke(198,202,83,255);
+         }else{
+             stroke(134,203,146,255);
+         }
+         strokeWeight(5);
+         if(nodes.size()>1){
+             Node last = nodes.get(0);
+             for (int i = 1; i <nodes.size() ; i++) {
+                 line(last.getX()*ratio,last.getY()*ratio,nodes.get(i).getX()*ratio,nodes.get(i).getY()*ratio);
+                 last = nodes.get(i);
+             }
+         }
+    }    private void displayGraph() {
        tron.getGraph().getNodes().forEach((key, value) -> displayNode(value));
     }
 
     private void displayNode(final Node node) {
 
-        float r = (node.isVisited())?255: node.getR();
-        float g = (node.isVisited())?map(node.getG(),0,255,0,50):node.getG();
-        float b =(node.isVisited())?map(node.getB(),0,255,0,50):node.getB();
-        fill(r, g, b,125);
-        stroke(r, g, b,125);
+        fill(201, 220,179,80);
+        stroke(201, 220,179,80);
         strokeWeight(3);
         ellipse(node.getX() * ratio, node.getY() * ratio, 6, 6);
         node.getEdges().forEach(e -> displayEdge(node, e));

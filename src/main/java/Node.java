@@ -9,9 +9,6 @@ import java.util.List;
 public class Node {
     private final int x;
     private final int y;
-    private final float r;
-    private final float g;
-    private final float b;
     private boolean visited;
     private final List<Edge> edges = new ArrayList<>();
 
@@ -22,22 +19,7 @@ public class Node {
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
-        this.r = (float)Math.random()*85;
-        this.g =(float)Math.random()*255;
-        this.b =(float)Math.random()*255;
         visited = false;
-    }
-
-    public float getR() {
-        return r;
-    }
-
-    public float getG() {
-        return g;
-    }
-
-    public float getB() {
-        return b;
     }
 
     public boolean isVisited() {
