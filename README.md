@@ -1,7 +1,5 @@
-# TronAI
+# TronAI [![Build Status](https://travis-ci.org/TristanBrismontier/TronAI.svg?branch=master)](https://travis-ci.org/TristanBrismontier/TronAI)
 Tron artificial intelligence
 
-Todo Soon: 
-- Docs
-- Maven or Gradle 
-- Travis CI
+Maven Build
+Travis done.
