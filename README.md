@@ -12,7 +12,7 @@ maven - [download](http://maven.apache.org/download.cgi) -
 
 To build/import the project use basic maven command.
 
-     <pre><code>mvn idea:idea</code></pre>
+     mvn idea:idea
   
   License
 ---------
