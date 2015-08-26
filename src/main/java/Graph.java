@@ -37,16 +37,9 @@ public class Graph {
         final Node b = nodes.get(vec2);
         final Edge edge = new Edge(b,a);
         try {
-
-
             removeEdge(edge);
             vec2.getEdges().forEach(e -> e.getOther(vec2).getEdges().remove(e));
             vec2.getEdges().clear();
-            // if(supr){
-            //     nodes.remove(vec1);
-            // }
-            // nodes.remove(vec2);
-
         } catch (NullPointerException e){
             System.err.println("null");
         }
@@ -166,5 +159,13 @@ public class Graph {
                 toRestore.getEdges().add(e);
             }
         }
+    }
+
+    public int getEdgeSize() {
+        int size = 0;
+        for (Map.Entry<Node,Node> node:nodes.entrySet()) {
+            size += node.getValue().getEdges().size();
+        }
+        return size;
     }
 }
