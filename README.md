@@ -11,7 +11,8 @@ maven - [download](http://maven.apache.org/download.cgi) -
 [quick-start guide](http://maven.apache.org/run-maven/index.html#Quick_Start)<br/>
 
 To build/import the project use basic maven command.
-  mvn idea:idea
+
+     <pre><code>mvn idea:idea</code></pre>
   
   License
 ---------
