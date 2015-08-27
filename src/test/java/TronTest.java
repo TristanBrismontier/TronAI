@@ -37,7 +37,7 @@ public class TronTest {
             opponent = tron.getGraph().getDirection(opponent,opponent );
             oppos.add(opponent);
             if (oldopponent != null) {
-                tron.getGraph().removeEdge(opponent, oldopponent, false);
+                tron.getGraph().removeEdge(opponent, oldopponent);
             }
         }
         assertTrue(startEdges>tron.getGraph().getEdgeSize());

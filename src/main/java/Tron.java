@@ -71,7 +71,7 @@ public class Tron extends PApplet{
                 player = tron.getGraph().getDirection(player,opponent );
                 players.add(player);
                 if (oldPlayer != null) {
-                    tron.getGraph().removeEdge(player, oldPlayer, false);
+                    tron.getGraph().removeEdge(player, oldPlayer);
                 }
             } catch (Exception e){
 
@@ -85,7 +85,7 @@ public class Tron extends PApplet{
                 opponent =  tron.getGraph().getDirection(opponent, opponent );//neig.stream().filter(node -> !node.isVisited()).findAny().get();
                 oppos.add(opponent);
                 if(oldopponent!=null){
-                    tron.getGraph().removeEdge(opponent, oldopponent, false);
+                    tron.getGraph().removeEdge(opponent, oldopponent);
                 }
             }catch (Exception e){
                tron.getGraph().restorePath(oppos);

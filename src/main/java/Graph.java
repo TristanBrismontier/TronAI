@@ -34,7 +34,7 @@ public class Graph {
         opponents.add(nodes.get(opponent));
     }
 
-    public void removeEdge(final Node vec1,final Node vec2, boolean supr){
+    public void removeEdge(final Node vec1,final Node vec2){
         final Node a = nodes.get(vec1);
         final Node b = nodes.get(vec2);
         final Edge edge = new Edge(b,a);
@@ -64,7 +64,7 @@ public class Graph {
 
     public Node getDirection(Node player, Node target) {
         Node graphPlayer = nodes.get(player);
-        if(AStar.Heuristic(player,target)>3) {
+        if(AStar.Heuristic(player,target)>6) {
             List<Node> path =  new AStar(this, player, target).getPath();
             System.err.println(path.size());
             if(path.size()>1){
@@ -183,6 +183,9 @@ public class Graph {
     }
 
     public Integer Cost(Node current, Node neigh) {
-        return 1;
+        float n = (float) (getNeighbours(neigh).size()/4)*10;
+        float d = (float) (getNeighbours(neigh).size()/4)*10;
+
+        return Math.round(n+d);
     }
 }

@@ -71,7 +71,7 @@ public class TronUniverse {
                     supr = false;
                 }
                 if (history.get(i) != null) {
-                    graph.removeEdge(node1, history.get(i).stream().reduce((a, b) -> b).get(),supr);
+                    graph.removeEdge(node1, history.get(i).stream().reduce((a, b) -> b).get());
                 }
                 if(history.get(i) == null) {
                     history.put(i, new ArrayList());
