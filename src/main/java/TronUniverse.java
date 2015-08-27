@@ -79,7 +79,7 @@ public class TronUniverse {
                 history.get(i).add(node1);
             }
             first = false;
-            System.out.println(graph.getDirection(player)); // A single line with UP, DOWN, LEFT or RIGHT
+            System.out.println(graph.getDirection(player,player )); // A single line with UP, DOWN, LEFT or RIGHT
         }
     }
 }

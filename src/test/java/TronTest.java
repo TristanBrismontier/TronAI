@@ -34,7 +34,7 @@ public class TronTest {
             assertMovement(oldopponent,opponent);
             oldopponent = opponent;
             tron.getGraph().addOpponent(opponent);
-            opponent = tron.getGraph().getDirection(opponent);
+            opponent = tron.getGraph().getDirection(opponent,opponent );
             oppos.add(opponent);
             if (oldopponent != null) {
                 tron.getGraph().removeEdge(opponent, oldopponent, false);

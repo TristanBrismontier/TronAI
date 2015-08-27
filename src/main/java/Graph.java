@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class Graph {
     private final Map<Node,Node> nodes = new HashMap<>();
     private final Set<Node> opponents = new HashSet<>();
+    private Node firstOpponent;
     private String lastMove;
 
     public void addEdge(Node nodeA,Node nodeB){
@@ -26,6 +27,7 @@ public class Graph {
 
     public void addOpponent(final Node opponent){
         Node oppo = nodes.get(opponent);
+        firstOpponent = oppo;
         if(oppo!=null){
             oppo.setVisited(true);
         }
@@ -60,8 +62,19 @@ public class Graph {
         return nodes.get(node);
     }
 
-    public Node getDirection(Node player) {
+    public Node getDirection(Node player, Node target) {
         Node graphPlayer = nodes.get(player);
+        if(AStar.Heuristic(player,target)>3) {
+            List<Node> path =  new AStar(this, player, target).getPath();
+            System.err.println(path.size());
+            if(path.size()>1){
+                Node nex = nodes.get(path.get(1));
+                System.err.println(nex);
+                graphPlayer.setVisited(true);
+                nodesToDirection(player, nex);
+                return nex;
+            }
+        }
 
         ArrayList<Node> neighbours = (ArrayList<Node>)getNeighbours(graphPlayer).stream().filter(node -> !node.isVisited()).collect(Collectors.toList());
 
@@ -167,5 +180,9 @@ public class Graph {
             size += node.getValue().getEdges().size();
         }
         return size;
+    }
+
+    public Integer Cost(Node current, Node neigh) {
+        return 1;
     }
 }

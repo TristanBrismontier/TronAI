@@ -10,6 +10,7 @@ public class Node {
     private final int x;
     private final int y;
     private boolean visited;
+    private float priority;
     private final List<Edge> edges = new ArrayList<>();
 
     public  List<Edge> getEdges(){
@@ -19,11 +20,20 @@ public class Node {
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
+        priority = 0;
         visited = false;
     }
 
     public boolean isVisited() {
         return visited;
+    }
+
+    public float getPriority() {
+        return priority;
+    }
+
+    public void setPriority(float priority) {
+        this.priority = priority;
     }
 
     public void setVisited(boolean visited) {
