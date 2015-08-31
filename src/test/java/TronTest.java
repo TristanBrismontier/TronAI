@@ -48,7 +48,7 @@ public class TronTest {
     public void restoreEdge() {
         TronUniverse tron = new TronUniverse();
         List<Node> oppos = new ArrayList<>();
-        int startEdges = countVisited(tron);
+        int startVisited = countVisited(tron);
         Node oldopponent = null;
         Node opponent = new Node(15, 10);
         oppos.add(opponent);
@@ -63,10 +63,10 @@ public class TronTest {
                 tron.getGraph().addOpponent(oldopponent);
             }
         }
-        assertTrue(startEdges > countVisited(tron));
+        assertTrue(startVisited < countVisited(tron));
         //Restore Edges of dead opponent
         tron.getGraph().restorePath(oppos);
-        assertEquals(startEdges, countVisited(tron));
+        assertEquals(startVisited, countVisited(tron));
     }
 
     private int countVisited(final TronUniverse tron) {
