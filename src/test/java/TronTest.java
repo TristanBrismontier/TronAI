@@ -13,48 +13,81 @@ import static org.junit.Assert.assertTrue;
 public class TronTest {
 
     /**
-     *  Basic Test
+     * Basic Test
      */
     @Test
-    public void tronTest(){
+    public void tronTest() {
         TronUniverse tron = new TronUniverse();
-        assertEquals(600, tron.getGraph().getNodes().size());
-        assertEquals(2300,tron.getGraph().getEdgeSize());
+        assertEquals(600, tron.getGraph().nodesSize);
+
     }
 
+    /**
+     * Check Neighbours count
+     */
     @Test
-    public void restoreEdge(){
+    public void tronNeighbours() {
         TronUniverse tron = new TronUniverse();
-        int startEdges = tron.getGraph().getEdgeSize();
+
+        assertEquals(4, tron.getGraph().getNeighbours(new Node(15, 15)).size());
+        assertEquals(3, tron.getGraph().getNeighbours(new Node(0, 15)).size());
+
+        assertEquals(2, tron.getGraph().getNeighbours(new Node(0, 0)).size());
+        assertEquals(2, tron.getGraph().getNeighbours(new Node(0, 19)).size());
+        assertEquals(2, tron.getGraph().getNeighbours(new Node(29, 0)).size());
+        assertEquals(2, tron.getGraph().getNeighbours(new Node(29, 19)).size());
+
+        assertTrue(tron.getGraph().getNeighbours(new Node(30, 20)).isEmpty());
+    }
+
+
+    /**
+     * Restore Path after opponent death
+     */
+    @Test
+    public void restoreEdge() {
+        TronUniverse tron = new TronUniverse();
         List<Node> oppos = new ArrayList<>();
-        Node oldopponent=null;
-        Node opponent = tron.getGraph().getNodes().get(new Node(15, 10));
+        int startEdges = countVisited(tron);
+        Node oldopponent = null;
+        Node opponent = new Node(15, 10);
         oppos.add(opponent);
-        for (int i = 0; i <20 ; i++) {
-            assertMovement(oldopponent,opponent);
+        for (int i = 0; i < 20; i++) {
+            assertMovement(oldopponent, opponent);
             oldopponent = opponent;
             tron.getGraph().addOpponent(opponent);
-            opponent = tron.getGraph().getDirection(opponent,opponent );
+            tron.getGraph().addPlayer(opponent);
+            opponent = tron.getGraph().getDirection();
             oppos.add(opponent);
             if (oldopponent != null) {
-                tron.getGraph().removeEdge(opponent, oldopponent);
+                tron.getGraph().addOpponent(oldopponent);
             }
         }
-        assertTrue(startEdges>tron.getGraph().getEdgeSize());
+        assertTrue(startEdges > countVisited(tron));
         //Restore Edges of dead opponent
         tron.getGraph().restorePath(oppos);
-        assertEquals(startEdges,tron.getGraph().getEdgeSize());
+        assertEquals(startEdges, countVisited(tron));
+    }
+
+    private int countVisited(final TronUniverse tron) {
+        int count = 0;
+        for (int i = 0; i < tron.getGraph().getxLength(); i++) {
+            for (int j = 0; j < tron.getGraph().getyLength(); j++) {
+                if (tron.getGraph().getGraph()[i][j] == 1) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     private void assertMovement(Node oldopponent, Node opponent) {
-        if(oldopponent == null)return;
+        if (oldopponent == null) return;
         assertFalse(oldopponent.equals(opponent));
         double dx = oldopponent.getX() - opponent.getX();
         double dy = oldopponent.getY() - opponent.getY();
-        assertTrue(dx!=dy);
-        double hypotenuse = Math.pow(dx,2D)+Math.pow(dy,2D);
-        assertTrue(hypotenuse<=2 && hypotenuse >=1);
+        assertTrue(dx != dy);
+        double heuristic = Math.pow(dx, 2D) + Math.pow(dy, 2D);
+        assertTrue(heuristic <= 2 && heuristic >= 1);
     }
-
-
 }

@@ -39,8 +39,8 @@ public class Tron extends PApplet{
 
     private void initGraph() {
         tron = new TronUniverse();
-        player = tron.getGraph().getNodes().get(new Node((int)random(30),(int)random(20)));
-        opponent = tron.getGraph().getNodes().get(new Node((int)random(30),(int)random(20)));
+        player = new Node((int)random(29),(int)random(19));
+        opponent = new Node((int)random(29),(int)random(19));
         System.err.println(player);
         players.clear();
         oppos.clear();
@@ -51,7 +51,7 @@ public class Tron extends PApplet{
 
     public void setup(){
         smooth();
-        frameRate(50);
+        frameRate(2);
     }
     @Override
     public void keyPressed() {
@@ -68,25 +68,21 @@ public class Tron extends PApplet{
         if(turn) {
             try {
                 oldPlayer = player;
-                player = tron.getGraph().getDirection(player,opponent );
+                tron.getGraph().addPlayer(player);
+                player = tron.getGraph().getDirection();
                 players.add(player);
-                if (oldPlayer != null) {
-                    tron.getGraph().removeEdge(player, oldPlayer);
-                }
+
             } catch (Exception e){
 
             }
         }else{
             oldopponent = opponent;
-            tron.getGraph().addOpponent(opponent);
             try {
                 List<Node> neig = tron.getGraph().getNeighbours(opponent);
                 Collections.shuffle(neig);
-                opponent =  tron.getGraph().getDirection(opponent, opponent );//neig.stream().filter(node -> !node.isVisited()).findAny().get();
+                opponent =  neig.stream().findAny().get();
+                tron.getGraph().addOpponent(opponent);
                 oppos.add(opponent);
-                if(oldopponent!=null){
-                    tron.getGraph().removeEdge(opponent, oldopponent);
-                }
             }catch (Exception e){
                tron.getGraph().restorePath(oppos);
             }
@@ -101,8 +97,8 @@ public class Tron extends PApplet{
 
     private void displaypath() {
         displayPath(players,198, 202 ,183 );
-        displayPath(oppos,134 , 203,203 );
-        displayPath(new AStar(tron.getGraph(), player, opponent).getPath(),255 ,22,84 );
+        displayPath(oppos, 134, 203, 203);
+        displayPath(new AStar(tron.getGraph(), player, opponent).getPath(), 255, 22, 84);
     }
 
     private void displayPath(List<Node> nodes, float r, float g, float b) {
@@ -116,36 +112,20 @@ public class Tron extends PApplet{
              }
          }
     }    private void displayGraph() {
-       tron.getGraph().getNodes().forEach((key, value) -> displayNode(value, false));
+       tron.getGraph().displayGraph().forEach(node -> displayNode(node));
     }
 
-    private void displayNode(final Node node, boolean path) {
-        fill(201, 220,179,80);
-        stroke(201, 220,179,80);
+    private void displayNode(final Node node) {
+        if (node.isVisited()){
+            fill(255,22,84,80);
+            stroke(255,22,84,80);
+        }else{
+            fill(201,220,179,80);
+            stroke(201,220,179,80);
+        }
         strokeWeight(3);
         ellipse(node.getX() * ratio, node.getY() * ratio, 6, 6);
-        node.getEdges().forEach(e -> displayEdge(node, e));
     }
 
-    private void displayEdge(Node origin, Edge e) {
-        Node destination = e.getOther(origin);
-        String direction = tron.getGraph().computeDirection(origin, destination);
-        if (direction.equals("UP")){
-            line(origin.getX()*ratio,origin.getY()*ratio,origin.getX()*ratio,origin.getY()*ratio-(ratio/2));
-            return;
-        }
-        if (direction.equals("DOWN")){
-            line(origin.getX()*ratio,origin.getY()*ratio,origin.getX()*ratio,origin.getY()*ratio+(ratio/2));
-            return;
-        }
-        if (direction.equals("LEFT")){
-            line(origin.getX()*ratio,origin.getY()*ratio,origin.getX()*ratio-(ratio/2),origin.getY()*ratio);
-            return;
-        }
-        if (direction.equals("RIGHT")){
-            line(origin.getX()*ratio,origin.getY()*ratio,origin.getX()*ratio+(ratio/2),origin.getY()*ratio);
-            return;
-        }
-    }
 
 }

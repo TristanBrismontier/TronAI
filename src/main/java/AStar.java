@@ -13,7 +13,7 @@ public class AStar {
     public AStar(Graph graph, Node start, Node target){
         this.start = start;
         this.target = target;
-        PriorityQueue<Node> frontier = new PriorityQueue<>(graph.getNodes().size(),new NodeCompartor());
+        PriorityQueue<Node> frontier = new PriorityQueue<>(graph.nodesSize,new NodeCompartor());
         start.setPriority(0);
         frontier.offer(start);
 

@@ -11,11 +11,6 @@ public class Node {
     private final int y;
     private boolean visited;
     private float priority;
-    private final List<Edge> edges = new ArrayList<>();
-
-    public  List<Edge> getEdges(){
-        return edges;
-    }
 
     public Node(int x, int y) {
         this.x = x;
@@ -28,14 +23,6 @@ public class Node {
         return visited;
     }
 
-    public float getPriority() {
-        return priority;
-    }
-
-    public void setPriority(float priority) {
-        this.priority = priority;
-    }
-
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
@@ -46,6 +33,14 @@ public class Node {
 
     public int getX() {
         return x;
+    }
+
+    public float getPriority() {
+        return priority;
+    }
+
+    public void setPriority(float priority) {
+        this.priority = priority;
     }
 
     @Override
@@ -63,7 +58,7 @@ public class Node {
         return "Node{" +
                 "x=" + x +
                 ", y=" + y +
-                '}';
+                '}' + visited;
     }
 
     public int hashCode() {
