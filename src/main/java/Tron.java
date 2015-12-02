@@ -1,9 +1,11 @@
 
 import processing.core.PApplet;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -19,7 +21,6 @@ public class Tron extends PApplet{
     private Node player;
     private Node oldPlayer = null;
     private Node opponent;
-    private Node oldopponent=null;
     private boolean turn = true;
 
     private List<Node> players = new ArrayList<>();
@@ -28,7 +29,6 @@ public class Tron extends PApplet{
 
 
     public static void main(String args[]) {
-        System.out.println("main");
         PApplet.main(new String[]{"Tron"});
     }
 
@@ -51,11 +51,12 @@ public class Tron extends PApplet{
 
     public void setup(){
         smooth();
-        frameRate(2);
+        frameRate(20);
     }
     @Override
     public void keyPressed() {
         initGraph();
+        loop();
     }
 
     public void draw(){
@@ -65,29 +66,33 @@ public class Tron extends PApplet{
             displayGraph();
             displaypath();
         popMatrix();
+
         if(turn) {
-            try {
-                oldPlayer = player;
-                graph.addPlayer(player);
-                player = graph.getDirection();
-                players.add(player);
-
-            } catch (Exception e){
-
-            }
+            movePlayer();
         }else{
-            oldopponent = opponent;
-            try {
-                List<Node> neig = graph.getNeighbours(opponent);
-                Collections.shuffle(neig);
-                opponent =  neig.stream().findAny().get();
-                graph.addOpponent(opponent);
-                oppos.add(opponent);
-            }catch (Exception e){
-               graph.restorePath(oppos);
-            }
+            moveOpponent();
         }
         turn=(oppos.size() == 0)|| !turn;
+    }
+
+    private void movePlayer() {
+        oldPlayer = player;
+        graph.addPlayer(player);
+        player = graph.getDirection();
+        players.add(player);
+    }
+
+    private void moveOpponent() {
+        List<Node> neig = graph.getNeighbours(opponent);
+        Collections.shuffle(neig);
+        Optional<Node> opponentNeightbours =  neig.stream().findAny();
+        if(!opponentNeightbours.isPresent()){
+            noLoop();
+            return;
+        }
+        opponent = opponentNeightbours.get();
+        graph.addOpponent(opponent);
+        oppos.add(opponent);
     }
 
     private void displaypath() {

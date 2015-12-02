@@ -103,18 +103,13 @@ public class Graph {
 
 
     public Node getDirection() {
-
-        System.err.println("Heuristic "+ AStar.Heuristic(player, firstOpponent) );
+        // should implement final state machine
         if (AStar.Heuristic(player, firstOpponent) > 3) {
             setNode(firstOpponent, 0);
-            System.err.println(firstOpponent + " Graph => "+graph[firstOpponent.getX()][firstOpponent.getY()]);
-            System.err.println(player + " Player Graph => "+graph[player.getX()][player.getY()]);
             List<Node> path = new AStar(this, player, firstOpponent).getPath();
-            System.err.println("PATH : " + path.size());
             path.forEach(System.err::println);
             if (path.size() > 1) {
                 Node nex = path.get(1);
-                System.err.println(nex+" TRERsdq");
                 setNode(firstOpponent,1);
                 setNode(player, 1);
                 return  nex;
@@ -144,10 +139,11 @@ public class Graph {
             }
         }
         setNode(player, 1);
-       return possible.entrySet().stream()
+        Node nex = possible.entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue))
                 .map(Map.Entry::getKey)
                 .findFirst().get();
+        return  nex;
     }
 
     public String computeDirection(Node origin, Node destination) {
@@ -156,15 +152,6 @@ public class Graph {
         } else {
             return (origin.getX() < destination.getX()) ? "RIGHT" : "LEFT";
         }
-    }
-
-    public String nodesToDirection(Node origin, Node destination) {
-        if (origin.getX() == destination.getX()) {
-            this.lastMove = (origin.getY() < destination.getY()) ? "DOWN" : "UP";
-        } else {
-            this.lastMove = (origin.getX() < destination.getX()) ? "RIGHT" : "LEFT";
-        }
-        return lastMove;
     }
 
     public void restorePath(List<Node> oppos) {
