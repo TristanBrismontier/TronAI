@@ -17,9 +17,8 @@ public class TronTest {
      */
     @Test
     public void tronTest() {
-        TronUniverse tron = new TronUniverse();
-        assertEquals(600, tron.getGraph().nodesSize);
-
+        Graph graph = new Graph();
+        assertEquals(600, graph.nodesSize);
     }
 
     /**
@@ -27,17 +26,17 @@ public class TronTest {
      */
     @Test
     public void tronNeighbours() {
-        TronUniverse tron = new TronUniverse();
+        Graph graph = new Graph();
 
-        assertEquals(4, tron.getGraph().getNeighbours(new Node(15, 15)).size());
-        assertEquals(3, tron.getGraph().getNeighbours(new Node(0, 15)).size());
+        assertEquals(4, graph.getNeighbours(new Node(15, 15)).size());
+        assertEquals(3, graph.getNeighbours(new Node(0, 15)).size());
 
-        assertEquals(2, tron.getGraph().getNeighbours(new Node(0, 0)).size());
-        assertEquals(2, tron.getGraph().getNeighbours(new Node(0, 19)).size());
-        assertEquals(2, tron.getGraph().getNeighbours(new Node(29, 0)).size());
-        assertEquals(2, tron.getGraph().getNeighbours(new Node(29, 19)).size());
+        assertEquals(2, graph.getNeighbours(new Node(0, 0)).size());
+        assertEquals(2, graph.getNeighbours(new Node(0, 19)).size());
+        assertEquals(2, graph.getNeighbours(new Node(29, 0)).size());
+        assertEquals(2, graph.getNeighbours(new Node(29, 19)).size());
 
-        assertTrue(tron.getGraph().getNeighbours(new Node(30, 20)).isEmpty());
+        assertTrue(graph.getNeighbours(new Node(30, 20)).isEmpty());
     }
 
 
@@ -46,34 +45,34 @@ public class TronTest {
      */
     @Test
     public void restoreEdge() {
-        TronUniverse tron = new TronUniverse();
+        Graph graph = new Graph();
         List<Node> oppos = new ArrayList<>();
-        int startVisited = countVisited(tron);
+        int startVisited = countVisited(graph);
         Node oldopponent = null;
         Node opponent = new Node(15, 10);
         oppos.add(opponent);
         for (int i = 0; i < 20; i++) {
             assertMovement(oldopponent, opponent);
             oldopponent = opponent;
-            tron.getGraph().addOpponent(opponent);
-            tron.getGraph().addPlayer(opponent);
-            opponent = tron.getGraph().getDirection();
+            graph.addOpponent(opponent);
+            graph.addPlayer(opponent);
+            opponent = graph.getDirection();
             oppos.add(opponent);
             if (oldopponent != null) {
-                tron.getGraph().addOpponent(oldopponent);
+                graph.addOpponent(oldopponent);
             }
         }
-        assertTrue(startVisited < countVisited(tron));
+        assertTrue(startVisited < countVisited(graph));
         //Restore Edges of dead opponent
-        tron.getGraph().restorePath(oppos);
-        assertEquals(startVisited, countVisited(tron));
+        graph.restorePath(oppos);
+        assertEquals(startVisited, countVisited(graph));
     }
 
-    private int countVisited(final TronUniverse tron) {
+    private int countVisited(final Graph graph) {
         int count = 0;
-        for (int i = 0; i < tron.getGraph().getxLength(); i++) {
-            for (int j = 0; j < tron.getGraph().getyLength(); j++) {
-                if (tron.getGraph().getGraph()[i][j] == 1) {
+        for (int i = 0; i < graph.getxLength(); i++) {
+            for (int j = 0; j < graph.getyLength(); j++) {
+                if (graph.getGraph()[i][j] == 1) {
                     count++;
                 }
             }

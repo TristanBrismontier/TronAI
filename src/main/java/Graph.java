@@ -45,10 +45,6 @@ public class Graph {
         return yLength;
     }
 
-    public static int getNodesSize() {
-        return nodesSize;
-    }
-
     public int[][] getGraph() {
         return graph;
     }
@@ -70,9 +66,6 @@ public class Graph {
         }
     }
 
-    public void newTurn() {
-        opponents.clear();
-    }
 
     public void addOpponent(final Node opponent) {
         firstOpponent = opponent;
@@ -143,7 +136,7 @@ public class Graph {
                 int x = other.getX() - player.getX();
                 int y = other.getY() - player.getY();
                 Node nes = new Node(other.getX() + x, other.getY() + y);
-                if (nes == null || nes.isVisited()) {
+                if (nes.isVisited()) {
                     possible.put(other, 0);
                 } else {
                     possible.put(other, (Math.min(getNeighbours(nes).size(), 3) + ((lastMove.equals(computeDirection(player, other)) && getNeighbours(nes).size() > 1) ? 1 : 0)) * -1);
@@ -151,11 +144,10 @@ public class Graph {
             }
         }
         setNode(player, 1);
-        Node nex = possible.entrySet().stream()
+       return possible.entrySet().stream()
                 .sorted(Comparator.comparing(Map.Entry::getValue))
                 .map(Map.Entry::getKey)
                 .findFirst().get();
-        return  nex;
     }
 
     public String computeDirection(Node origin, Node destination) {

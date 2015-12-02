@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Tron extends PApplet{
 
-    private TronUniverse tron;
+    private Graph graph;
     private int ratio = 25;
     private int margeX = 90;
     private int margeY = 60;
@@ -38,7 +38,7 @@ public class Tron extends PApplet{
     }
 
     private void initGraph() {
-        tron = new TronUniverse();
+        graph = new Graph();
         player = new Node((int)random(29),(int)random(19));
         opponent = new Node((int)random(29),(int)random(19));
         System.err.println(player);
@@ -46,7 +46,7 @@ public class Tron extends PApplet{
         oppos.clear();
         players.add(player);
         oppos.add(opponent);
-        tron.getGraph().addOpponent(opponent);
+        graph.addOpponent(opponent);
     }
 
     public void setup(){
@@ -68,8 +68,8 @@ public class Tron extends PApplet{
         if(turn) {
             try {
                 oldPlayer = player;
-                tron.getGraph().addPlayer(player);
-                player = tron.getGraph().getDirection();
+                graph.addPlayer(player);
+                player = graph.getDirection();
                 players.add(player);
 
             } catch (Exception e){
@@ -78,27 +78,22 @@ public class Tron extends PApplet{
         }else{
             oldopponent = opponent;
             try {
-                List<Node> neig = tron.getGraph().getNeighbours(opponent);
+                List<Node> neig = graph.getNeighbours(opponent);
                 Collections.shuffle(neig);
                 opponent =  neig.stream().findAny().get();
-                tron.getGraph().addOpponent(opponent);
+                graph.addOpponent(opponent);
                 oppos.add(opponent);
             }catch (Exception e){
-               tron.getGraph().restorePath(oppos);
+               graph.restorePath(oppos);
             }
         }
-        if(oppos.size() == 0){
-            turn = true;
-        }else{
-            turn = !turn;
-
-        }
+        turn=(oppos.size() == 0)|| !turn;
     }
 
     private void displaypath() {
         displayPath(players,198, 202 ,183 );
         displayPath(oppos, 134, 203, 203);
-        displayPath(new AStar(tron.getGraph(), player, opponent).getPath(), 255, 22, 84);
+        displayPath(new AStar(graph, player, opponent).getPath(), 255, 22, 84);
     }
 
     private void displayPath(List<Node> nodes, float r, float g, float b) {
@@ -112,7 +107,7 @@ public class Tron extends PApplet{
              }
          }
     }    private void displayGraph() {
-       tron.getGraph().displayGraph().forEach(node -> displayNode(node));
+       graph.displayGraph().forEach(node -> displayNode(node));
     }
 
     private void displayNode(final Node node) {
@@ -126,6 +121,4 @@ public class Tron extends PApplet{
         strokeWeight(3);
         ellipse(node.getX() * ratio, node.getY() * ratio, 6, 6);
     }
-
-
 }
